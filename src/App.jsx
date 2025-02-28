@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useNotes } from "./stores/store";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { notes, addNote, removeNote } = useNotes();
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <h1 className="text-3xl font-bold">Home page </h1>
+      <form
+        action=""
+        onSubmit={(e) => {
+          e.preventDefault();
+          addNote(e.target.note.value);
+        }}
+      >
+        <input type="text" id="note" name="note" className="border" />
+        <button type="submit" className="bg-blue-900 text-white p-1 rounded">
+          Add note
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      </form>
+      {notes.map((note) => (
+        <div key={note} className="flex gap-2">
+          <p>{note}</p>
+          <button
+            className="border-red-500 rounded border"
+            onClick={() => {
+              removeNote(note);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      ))}
+      <button>Delete all notes</button>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
